@@ -1,6 +1,7 @@
 // src/lib/firebase.ts
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
+import { getAuth, signInAnonymously } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBmPHx4Mx93qGhxQjTMLlaxXLpT7qnzCIA",
@@ -14,3 +15,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const db = getDatabase(app);
+
+// Añadimos esto para autenticar anónimamente al arrancar:
+const auth = getAuth(app);
+signInAnonymously(auth).catch((err) => {
+  console.error("Error en auth anónima:", err);
+});
