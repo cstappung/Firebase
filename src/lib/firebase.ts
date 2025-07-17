@@ -1,5 +1,5 @@
 // src/lib/firebase.ts
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps } from "firebase/app";
 import { getDatabase } from "firebase/database";
 import { getAuth, signInAnonymously } from "firebase/auth";
 
@@ -13,11 +13,16 @@ const firebaseConfig = {
   appId: "1:143399582366:web:98d8ca53366bc65c7fd98f",
 };
 
-const app = initializeApp(firebaseConfig);
+const app = !getApps().length
+  ? initializeApp(firebaseConfig)
+  : getApps()[0];
+
 export const db = getDatabase(app);
 
-// Añadimos esto para autenticar anónimamente al arrancar:
-const auth = getAuth(app);
-signInAnonymously(auth).catch((err) => {
-  console.error("Error en auth anónima:", err);
-});
+// ─── AUTENTICACIÓN ANÓNIMA SOLO EN CLIENTE ───
+if (typeof window !== "undefined") {
+  const auth = getAuth(app);
+  signInAnonymously(auth).catch((err) =>
+    console.error("Error en auth anónima:", err)
+  );
+}
