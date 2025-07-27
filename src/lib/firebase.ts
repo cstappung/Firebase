@@ -1,28 +1,23 @@
-// src/lib/firebase.ts
-import { initializeApp, getApps } from "firebase/app";
+// Import the functions you need from the SDKs you need
+import { initializeApp, getApp, getApps } from "firebase/app";
 import { getDatabase } from "firebase/database";
-import { getAuth, signInAnonymously } from "firebase/auth";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
+// IMPORTANT: Replace with your own Firebase project configuration.
 const firebaseConfig = {
-  apiKey: "AIzaSyBmPHx4Mx93qGhxQjTMLlaxXLpT7qnzCIA",
-  authDomain: "eggspress-dashboard.firebaseapp.com",
-  databaseURL: "https://eggspress-dashboard-default-rtdb.firebaseio.com",
-  projectId: "eggspress-dashboard",
-  storageBucket: "eggspress-dashboard.appspot.com",
-  messagingSenderId: "143399582366",
+  apiKey: "AIzaSyBb-a97yzK1G1zu7DgD-tYwUqgAvwn8exg",
+  authDomain: "egg-counter-dashboard.firebaseapp.com",
+  databaseURL: "egg-counter-dashboard-default-rtdb.firebaseio.com",
+  projectId: "egg-counter-dashboard",
+  storageBucket: "egg-counter-dashboard.appspot.com",
+  messagingSenderId: "105476697823",
   appId: "1:143399582366:web:98d8ca53366bc65c7fd98f",
 };
 
-const app = !getApps().length
-  ? initializeApp(firebaseConfig)
-  : getApps()[0];
+// Initialize Firebase
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+const database = getDatabase(app);
 
-export const db = getDatabase(app);
-
-// ─── AUTENTICACIÓN ANÓNIMA SOLO EN CLIENTE ───
-if (typeof window !== "undefined") {
-  const auth = getAuth(app);
-  signInAnonymously(auth).catch((err) =>
-    console.error("Error en auth anónima:", err)
-  );
-}
+export { app, database };
